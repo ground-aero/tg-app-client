@@ -7,7 +7,7 @@
 Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlify.app/) to view it in your browser.
 
 
-#### Basic stack: React/CSS
+#### Basic stack: React/CSS/REST API
 
 ---
 Дополнительно.
