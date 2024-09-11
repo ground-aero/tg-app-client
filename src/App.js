@@ -179,7 +179,7 @@ function App() {
               <p>Condition: {day.day.condition.text}</p>
             </div>
           ))}
-          <button onClick={loadMoreForecast}>Load More</button>
+          <button onClick={loadMoreForecast} className={'buttonSecondary'}>Загрузить еще...</button>
         </div>
       )}
 
