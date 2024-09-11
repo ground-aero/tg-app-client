@@ -1,10 +1,14 @@
 // import ReactDOM from 'react-dom/client';
 import React, {useEffect, useState} from 'react'
 import './App.css';
+import Button from './components/Button/Button';
+import { useTelegram } from './hooks/useTelegram';
+import { Route, Routes } from 'react-router-dom';
+import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'https://your-backend-url.com';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://your-backend-url.com';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -14,13 +18,23 @@ function App() {
   const [loadedDays, setLoadedDays] = useState(3);
   const [ws, setWs] = useState(null);
 
+  const {tg, user, onClose} = useTelegram();
+
   useEffect(() => {
     tg.ready()
   },[])
 
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:3000');
-    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+
+    newWs.onopen = () => {
+      console.log('WebSocket connected');
+    };
+  
+    newWs.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
     newWs.onmessage = (event) => {
       if (event.data instanceof Blob) {
@@ -33,14 +47,12 @@ function App() {
     };
     setWs(newWs);
 
-    return () => {
+  return () => {
+    if (newWs.readyState === WebSocket.OPEN) {
       newWs.close();
-    };
+    }
+  };
   }, []);
-
-  const onClose = () => {
-    tg.close
-  }
 
   useEffect(() => {
     if (activePage === 2) {
@@ -109,7 +121,15 @@ function App() {
   return (
     <div>
 
+      {/* future <Header /> */}
       <h1>Приложение "3 в одном"</h1>
+
+      {/* <Routes>
+        <Route path="/" exact/> */}
+        {/* <Route index element={<Chats/>}/> */}
+        {/* <Route path="weather" element={<Weather/>}/> */}
+        {/* <Route path="forecastr" element={<Forecast/>}/> */}
+      {/* </Routes> */}
 
       {activePage === 1 && (
         <div>
@@ -120,7 +140,7 @@ function App() {
             ))}
           </div>
           <input
-            type="text"
+            type="text" placeholder={'Ваше сообщение'}
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 sendMessage(e.target.value);
@@ -159,11 +179,18 @@ function App() {
       )}
 
       <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-        <button onClick={() => setActivePage(1)}>Chat1</button>
-        <button onClick={() => setActivePage(2)}>Weather</button>
-        <button onClick={() => setActivePage(3)}>Forecast</button>
+        <Button onClick={() => setActivePage(1)}>Chat</Button>
+        {/* <button onClick={() => setActivePage(1)}></button> */}
+        <Button onClick={() => setActivePage(2)}>Weather</Button>
+        {/* <button onClick={() => setActivePage(3)}>Forecast</button> */}
+        <Button onClick={() => setActivePage(3)}>Forecast</Button>
+        
       </div>
-      <button onClick={onClose}>Закрыть</button>
+      {/* <button onClick={onClose}>Закрыть</button> */}
+      <Button onClick={onClose}>Закрыть</Button>
+      <span>
+        {user?.username}
+      </span>
     </div>
   );
 }

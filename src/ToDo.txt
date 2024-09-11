@@ -1,0 +1,3 @@
+ReactRouterDom использовать , на App.js обернуть страницы в роуты 
+
+useTelegram hook
