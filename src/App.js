@@ -119,10 +119,15 @@ function App() {
   };
 
   return (
-    <div>
+    <div className={'pageContent'}>
+
+      {/* <button onClick={onClose}>Закрыть</button> */}
+      <div className={'btnClose'}>
+        <Button onClick={onClose}>Закрыть</Button>
+      </div>
 
       {/* future <Header /> */}
-      <h1>Приложение "3 в одном"</h1>
+      <h1 className={'header'}>Приложение "3 в одном"</h1>
 
       {/* <Routes>
         <Route path="/" exact/> */}
@@ -140,7 +145,7 @@ function App() {
             ))}
           </div>
           <input
-            type="text" placeholder={'Ваше сообщение'}
+            type="text" placeholder={'Ваше сообщение'} className={'input'}
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 sendMessage(e.target.value);
@@ -155,7 +160,7 @@ function App() {
         <div>
           <h2>Weather in Moscow</h2>
           {weatherData && (
-            <div>
+            <div className={'cardWeather'}>
               <p>Temperature: {weatherData.current.temp_c}°C</p>
               <p>Condition: {weatherData.current.condition.text}</p>
             </div>
@@ -167,7 +172,7 @@ function App() {
         <div>
           <h2>Forecast</h2>
           {forecastData.map((day, index) => (
-            <div key={index}>
+            <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
@@ -186,10 +191,8 @@ function App() {
         <Button onClick={() => setActivePage(3)}>Forecast</Button>
         
       </div>
-      {/* <button onClick={onClose}>Закрыть</button> */}
-      <Button onClick={onClose}>Закрыть</Button>
       <span>
-        {user?.username}
+        {`Пользователь: @${user?.username}`}
       </span>
     </div>
   );

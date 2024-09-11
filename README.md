@@ -1,6 +1,8 @@
 
 # Part-1 (Frontend). Telegram Mini App 'Three-in-One'
 
+### Name of the App if Telegram: @TgGroundBot
+
 ### Frontend deployed to 'Netlify' server:
 Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlify.app/) to view it in your browser.
 

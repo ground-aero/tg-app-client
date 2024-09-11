@@ -8,3 +8,34 @@ body {
   background: var(--tg-theme-bg-color);
   color: var(--tg-theme-text-color);
 }
+
+.pageContent {
+  padding: 10px 7px;
+}
+
+.btnClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header {
+  padding: 10px 0 20px;
+}
+
+.input {
+  height: 35px;
+  width: 55%;
+  border: 1px solid rgb(112, 188, 211);
+  background-color: rgb(238, 238, 238);
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.cardWeather {
+  width: 200px;
+  padding: 10px 5px;
+  margin-bottom: 15px;
+  border: 1px solid rgb(112, 188, 211);
+  background-color: rgb(238, 238, 238);
+  border-radius: 4px;
+}
