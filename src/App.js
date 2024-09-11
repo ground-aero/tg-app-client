@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react'
 import './App.css';
 
 const tg = window.Telegram.WebApp;
+const API_BASE_URL = 'https://your-backend-url.com';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -17,7 +19,9 @@ function App() {
   },[])
 
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:3000');
+    // const newWs = new WebSocket('ws://localhost:3000');
+    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+
     newWs.onmessage = (event) => {
       if (event.data instanceof Blob) {
         event.data.text().then(text => {
@@ -48,17 +52,43 @@ function App() {
 
   const fetchWeatherData = async () => {
     try {
-      const response = await fetch('/api/weather');
+      const response = await fetch(`${API_BASE_URL}/api/weather`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Server response:', text);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
       const data = await response.json();
       setWeatherData(data);
     } catch (error) {
-      console.error('ошибка запроса weather data:', error);
+      console.error('Ошибка запроса weather data:', error);
+      console.error('Полная информация об ошибке:', error.message);
     }
   };
 
   const fetchForecastData = async () => {
     try {
-      const response = await fetch(`/api/forecast?days=${loadedDays}`);
+      // const response = await fetch(`/api/forecast?days=${loadedDays}`);
+      const response = await fetch(`${API_BASE_URL}/api/forecast?days=${loadedDays}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Server response:', text);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       setForecastData(data.forecast.forecastday);
     } catch (error) {
@@ -129,7 +159,7 @@ function App() {
       )}
 
       <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-        <button onClick={() => setActivePage(1)}>Chat</button>
+        <button onClick={() => setActivePage(1)}>Chat1</button>
         <button onClick={() => setActivePage(2)}>Weather</button>
         <button onClick={() => setActivePage(3)}>Forecast</button>
       </div>
