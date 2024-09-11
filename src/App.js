@@ -158,7 +158,7 @@ function App() {
 
       {activePage === 2 && (
         <div>
-          <h2>Weather in Moscow</h2>
+          <h2>Погода в Москве</h2>
           {weatherData && (
             <div className={'cardWeather'}>
               <p>Temperature: {weatherData.current.temp_c}°C</p>
@@ -170,7 +170,7 @@ function App() {
 
       {activePage === 3 && (
         <div>
-          <h2>Forecast</h2>
+          <h2>Прогноз</h2>
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
@@ -183,13 +183,12 @@ function App() {
         </div>
       )}
 
-      <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+      <div className={'buttonsBottom'}>
         <Button onClick={() => setActivePage(1)}>Chat</Button>
         {/* <button onClick={() => setActivePage(1)}></button> */}
         <Button onClick={() => setActivePage(2)}>Weather</Button>
         {/* <button onClick={() => setActivePage(3)}>Forecast</button> */}
         <Button onClick={() => setActivePage(3)}>Forecast</Button>
-        
       </div>
       <span>
         {`Пользователь: @${user?.username}`}
