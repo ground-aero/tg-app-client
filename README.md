@@ -7,9 +7,14 @@
 Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlify.app/) to view it in your browser.
 
 
+#### Basic stack: React/CSS
+
+---
+Дополнительно.
+Адрес репозитория бэкэнд части приложения и инструкция по запуску: https://github.com/ground-aero/tg-app-server  
+
 ---
 
-#### Basic stack: React/CSS
 
 ##### Getting Started with Create React App
 
