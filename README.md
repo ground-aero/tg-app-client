@@ -9,6 +9,14 @@ Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlif
 
 #### Basic stack: React/CSS/REST API
 
+~~~
+ToDo:
+- улучшить UI/UX (сделать кнопку отправки сообщений в чате,  
+не только по нажатию 'Enter')
+- отображать user name напротив каждого сообщения  
+
+~~~
+
 ---
 Дополнительно.
 Адрес репозитория бэкэнд части приложения и инструкция по запуску: https://github.com/ground-aero/tg-app-server  
