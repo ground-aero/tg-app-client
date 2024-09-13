@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'https://tg-app-online.ru';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://tg-app-online.ru';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -25,8 +25,9 @@ function App() {
   },[])
 
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:4000');
-    const newWs = new WebSocket('wss://tg-app-online.ru');
+    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket('ws://tg-app-online.ru');
+    // const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
 
     newWs.onopen = () => {
@@ -62,6 +63,12 @@ function App() {
       fetchForecastData();
     }
   }, [activePage, loadedDays]);
+
+  const sendMessage = (message) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    }
+  };
 
   const fetchWeatherData = async () => {
     try {
@@ -106,12 +113,6 @@ function App() {
       setForecastData(data.forecast.forecastday);
     } catch (error) {
       console.error('ошибка запроса forecast data:', error);
-    }
-  };
-
-  const sendMessage = (message) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
     }
   };
 
