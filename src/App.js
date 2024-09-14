@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-// const API_BASE_URL = 'https://tg-app-online.ru';
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://tg-app-online.ru';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -31,8 +31,8 @@ function App() {
   };
 
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:4000');
-    // const newWs = new WebSocket('wss://tg-app-online.ru');
+    // const newWs = new WebSocket('ws://localhost:4000');
+    const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
 
@@ -178,7 +178,7 @@ function App() {
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
-              <img src={forecastData.forecast.forecastday.day.condition.icon} alt={forecastData.forecast.forecastday.day.condition.text} />
+              <img src={day.day.condition.icon} alt={day.day.condition.text} />
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
               <p>Condition: {day.day.condition.text}</p>
