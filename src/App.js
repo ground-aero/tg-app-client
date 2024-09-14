@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'https://tg-app-online.ru';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://tg-app-online.ru';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -24,9 +24,15 @@ function App() {
     tg.ready()
   },[])
 
+  const sendMessage = (message) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    }
+  };
+
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:4000');
-    const newWs = new WebSocket('wss://tg-app-online.ru');
+    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
 
@@ -63,12 +69,6 @@ function App() {
       fetchForecastData();
     }
   }, [activePage, loadedDays]);
-
-  const sendMessage = (message) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
-    }
-  };
 
   const fetchWeatherData = async () => {
     try {
@@ -163,8 +163,10 @@ function App() {
           <h2>Погода в Москве</h2>
           {weatherData && (
             <div className={'cardWeather'}>
+              <h3>{'Сегодня'}</h3>
+              <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
               <p>Temperature: {weatherData.current.temp_c}°C</p>
-              <p>Condition: {weatherData.current.condition.text}</p>
+              <p>Condition: {weatherData.current.condition.text}</p>            
             </div>
           )}
         </div>
@@ -176,6 +178,7 @@ function App() {
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
+              {/* <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} /> */}
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
               <p>Condition: {day.day.condition.text}</p>

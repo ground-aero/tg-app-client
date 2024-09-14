@@ -7,6 +7,8 @@
 
 .idea
 
+pattern_json.json
+
 # testing
 /coverage
 
