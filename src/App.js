@@ -14,7 +14,9 @@ function App() {
   const [activePage, setActivePage] = useState(1);
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
+  const [weatherLocation, setweatherLocation] = useState('');
   const [forecastData, setForecastData] = useState([]);
+  const [forecastLocation, setForecastLocation] = useState('');
   const [loadedDays, setLoadedDays] = useState(3);
   const [ws, setWs] = useState(null);
 
@@ -87,6 +89,7 @@ function App() {
   
       const data = await response.json();
       setWeatherData(data);
+      setweatherLocation(data.location.name);
     } catch (error) {
       console.error('Ошибка запроса weather data:', error);
       console.error('Полная информация об ошибке:', error.message);
@@ -111,6 +114,7 @@ function App() {
 
       const data = await response.json();
       setForecastData(data.forecast.forecastday);
+      setForecastLocation(data.location.name);
     } catch (error) {
       console.error('ошибка запроса forecast data:', error);
     }
@@ -160,7 +164,7 @@ function App() {
 
       {activePage === 2 && (
         <div>
-          <h2>Погода в Москве</h2>
+          <h2>Погода: ${weatherLocation}</h2>
           {weatherData && (
             <div className={'cardWeather'}>
               <h3>{'Сегодня'}</h3>
@@ -174,10 +178,11 @@ function App() {
 
       {activePage === 3 && (
         <div>
-          <h2>Прогноз</h2>
+          <h2>Прогноз: ${forecastLocation}</h2>
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
+              <p>Max temp: {day.day.maxtemp_c}°C</p>
               <img src={day.day.condition.icon} alt={day.day.condition.text} />
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
