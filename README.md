@@ -9,20 +9,28 @@ Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlif
 
 #### Basic stack: React/CSS/REST API
 
+ ```
+ Endpoints:
+ /api/weather - запрос текущей погоды  
+ /api/forecast - запрос прогноза погоды
+ 
+ ```
+
+
+---
+Дополнительно.
+Адрес репозитория бэкэнд части-2 приложения: https://github.com/ground-aero/tg-app-server  
+
+
+
 ~~~
 ToDo:
 - улучшить UI/UX (сделать кнопку отправки сообщений в чате,  
-не только по нажатию 'Enter')
+не только по нажатию 'Enter', отображать имя пользователя отправившего сообщение)
 - отображать user name напротив каждого сообщения 
 - настроить отображение картинок о погоде (внутри карточек погоды) входящих из внешнего API  
 
 ~~~
-
----
-Дополнительно.
-Адрес репозитория бэкэнд части приложения и инструкция по запуску: https://github.com/ground-aero/tg-app-server  
-
----
 
 
 ##### Getting Started with Create React App
