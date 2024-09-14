@@ -164,7 +164,7 @@ function App() {
 
       {activePage === 2 && (
         <div>
-          <h2>Погода: ${weatherLocation}</h2>
+          <h2>Погода: {weatherLocation}</h2>
           {weatherData && (
             <div className={'cardWeather'}>
               <h3>{'Сегодня'}</h3>
@@ -178,7 +178,7 @@ function App() {
 
       {activePage === 3 && (
         <div>
-          <h2>Прогноз: ${forecastLocation}</h2>
+          <h2>Прогноз: {forecastLocation}</h2>
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
