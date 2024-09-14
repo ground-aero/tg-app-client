@@ -178,7 +178,7 @@ function App() {
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
-              {/* <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} /> */}
+              <img src={forecastData.forecast.forecastday.day.condition.icon} alt={forecastData.forecast.forecastday.day.condition.text} />
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
               <p>Condition: {day.day.condition.text}</p>
