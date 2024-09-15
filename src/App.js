@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-// const API_BASE_URL = 'https://tg-app-online.ru';
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://tg-app-online.ru';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -17,6 +17,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [weatherLocation, setweatherLocation] = useState('');
   const [forecastData, setForecastData] = useState([]);
+  const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [forecastLocation, setForecastLocation] = useState('');
   const [loadedDays, setLoadedDays] = useState(3);
   const [ws, setWs] = useState(null);
@@ -28,8 +29,8 @@ function App() {
   },[])
 
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:4000');
-    // const newWs = new WebSocket('wss://tg-app-online.ru/ws');
+    // const newWs = new WebSocket('ws://localhost:4000');
+    const newWs = new WebSocket('wss://tg-app-online.ru/ws');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
@@ -101,6 +102,7 @@ function App() {
   };
 
   const fetchForecastData = async () => {
+    setIsFetchingForecast(true);
     try {
       // const response = await fetch(`/api/forecast?days=${loadedDays}`);
       const response = await fetch(`${API_BASE_URL}/api/forecast?days=${loadedDays}`, {
@@ -121,6 +123,8 @@ function App() {
       setForecastLocation(data.location.name);
     } catch (error) {
       console.error('ошибка запроса forecast data:', error);
+    } finally {
+      setIsFetchingForecast(false);
     }
   };
 
@@ -199,7 +203,13 @@ function App() {
               <p>Condition: {day.day.condition.text}</p>
             </div>
           ))}
-          <button onClick={loadMoreForecast} className={'buttonSecondary'}>Загрузить еще...</button>
+          <button 
+            onClick={loadMoreForecast} 
+            className={'buttonSecondary'}
+            disabled={isFetchingForecast}
+          >
+            {isFetchingForecast ? 'Загрузка...' : 'Загрузить еще...'}
+          </button>
         </div>
       )}
 
