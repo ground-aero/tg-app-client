@@ -54,11 +54,13 @@ You may also see any lint errors in the console.
 ![img-1](/images/startMenu.png)  
 
 ---
-![img-2](/images/weatherWindow.jpg)
+
+![img-3](/images/chatWindow.png)
 
 ---
 
-![img-3](/images/chatWindow.png)
+![img-2](/images/weatherWindow.jpg)
+
 
 
 
