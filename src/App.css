@@ -54,8 +54,28 @@ body {
   cursor: pointer;
 }
 
-.buttonsBottom 
-{ position: fixed;
+.inputBox {
+  display: flex;
+  width: 90%;
+  justify-content: flex-start;
+}
+.buttonSend {
+  width: 35px;
+  height: 35px;
+  margin-left: 3px;
+  /* background-color: #a9ffc0; */
+  background-image: url('/images/send.png');
+  background-position: center center;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  border: var(--tg-theme-button-text-color);
+  /* border-radius: 4px; */
+  cursor: pointer;
+}
+
+.buttonsBottom { 
+  position: fixed;
   bottom: 0;
   width: 100%;
   margin-left: auto;

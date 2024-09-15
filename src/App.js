@@ -7,11 +7,12 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'https://tg-app-online.ru';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://tg-app-online.ru';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
+  const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
   const [weatherLocation, setweatherLocation] = useState('');
@@ -26,26 +27,17 @@ function App() {
     tg.ready()
   },[])
 
-  const sendMessage = (message) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
-    }
-  };
-
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:4000');
-    const newWs = new WebSocket('wss://tg-app-online.ru/ws'); // !!!! WebSocket connection to 'wss://tg-app-online.ru/' failed:
+    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket('wss://tg-app-online.ru/ws'); // !!!! WebSocket connection to 'wss://tg-app-online.ru/' failed:
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
-
     newWs.onopen = () => {
       console.log('WebSocket connected');
     };
-  
-    newWs.onerror = (error) => {
+      newWs.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
-
     newWs.onmessage = (event) => {
       if (event.data instanceof Blob) {
         event.data.text()
@@ -72,6 +64,17 @@ function App() {
       fetchForecastData();
     }
   }, [activePage, loadedDays]);
+
+  const sendMessage = (message) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    }
+  };
+
+  const handleSendMessage = () => {
+    sendMessage(inputMessage.trim())
+    setInputMessage('')
+  };
 
   const fetchWeatherData = async () => {
     try {
@@ -147,15 +150,20 @@ function App() {
         <div>
           <span>{`Пользователь: @${user?.username}`}</span>
           <h2>Chat</h2>
-          <input
-            type="text" placeholder={'Ваше сообщение'} className={'input'}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                sendMessage(e.target.value);
-                e.target.value = '';
-              }
-            }}
-          />
+          <div className={'inputBox'}>
+            <input
+              type="text" placeholder={'Введите сообщение'} className={'input'}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendMessage();
+                }
+              }}
+            />
+            <button type="buttonSecondary" onClick={handleSendMessage} className={'buttonSend'}></button>
+          </div>
+
           <div>
             {messages.map((message, index) => (
                 <p key={index}><span>{`@${user?.username}:  `}</span>{typeof message === 'string' ? message : JSON.stringify(message)}</p>
