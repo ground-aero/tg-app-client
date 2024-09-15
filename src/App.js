@@ -7,7 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'http://tg-app-online.ru';
+const API_BASE_URL = 'https://tg-app-online.ru';
 // const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
