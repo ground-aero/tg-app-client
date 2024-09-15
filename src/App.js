@@ -33,7 +33,7 @@ function App() {
   };
 
   useEffect(() => {
-    const newWs = new WebSocket('wss://localhost:4000');
+    const newWs = new WebSocket('ws://localhost:4000');
     // const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
