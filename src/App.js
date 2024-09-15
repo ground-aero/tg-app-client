@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-// const API_BASE_URL = 'https://tg-app-online.ru';
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://tg-app-online.ru';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -33,7 +33,8 @@ function App() {
   };
 
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket('ws://localhost:4000');
+        const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
@@ -48,7 +49,8 @@ function App() {
 
     newWs.onmessage = (event) => {
       if (event.data instanceof Blob) {
-        event.data.text().then(text => {
+        event.data.text()
+        .then(text => {
           setMessages((prevMessages) => [...prevMessages, text]);
         });
       } else {
@@ -144,12 +146,8 @@ function App() {
 
       {activePage === 1 && (
         <div>
+          <span>{`Пользователь: @${user?.username}`}</span>
           <h2>Chat</h2>
-          <div>
-            {messages.map((message, index) => (
-              <p key={index}>{typeof message === 'string' ? message : JSON.stringify(message)}</p>
-            ))}
-          </div>
           <input
             type="text" placeholder={'Ваше сообщение'} className={'input'}
             onKeyPress={(e) => {
@@ -159,6 +157,16 @@ function App() {
               }
             }}
           />
+          <div>
+            {messages.map((message, index) => (
+              <div>
+                <span>{`Пользователь @${user?.username}:`}</span>
+                <p key={index}>{typeof message === 'string' ? message : JSON.stringify(message)}</p>
+              </div>
+
+            ))}
+          </div>
+
         </div>
       )}
 
@@ -182,7 +190,6 @@ function App() {
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
-              <p>Max temp: {day.day.maxtemp_c}°C</p>
               <img src={day.day.condition.icon} alt={day.day.condition.text} />
               <p>Max temp: {day.day.maxtemp_c}°C</p>
               <p>Min temp: {day.day.mintemp_c}°C</p>
@@ -200,9 +207,6 @@ function App() {
         {/* <button onClick={() => setActivePage(3)}>Forecast</button> */}
         <Button onClick={() => setActivePage(3)}>Forecast</Button>
       </div>
-      <span>
-        {`Пользователь: @${user?.username}`}
-      </span>
     </div>
   );
 }
