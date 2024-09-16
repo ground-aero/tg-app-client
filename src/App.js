@@ -7,8 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
 const tg = window.Telegram.WebApp;
-const API_BASE_URL = 'https://tg-app-online.ru';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://tg-app-online.ru';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const [activePage, setActivePage] = useState(1);
@@ -19,7 +19,7 @@ function App() {
   const [forecastData, setForecastData] = useState([]);
   const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [forecastLocation, setForecastLocation] = useState('');
-  const [loadedDays, setLoadedDays] = useState(3);
+  const [loadedDays, setLoadedDays] = useState(5);
   const [ws, setWs] = useState(null);
 
   const {tg, user, onClose} = useTelegram();
@@ -29,8 +29,8 @@ function App() {
   },[])
 
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:4000');
-        const newWs = new WebSocket('wss://tg-app-online.ru');
+    const newWs = new WebSocket('ws://localhost:4000');
+        // const newWs = new WebSocket('wss://tg-app-online.ru');
     // const newWs = new WebSocket('wss://tg-app-online.ru/ws');
     // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
@@ -180,7 +180,7 @@ function App() {
 
       {activePage === 2 && (
         <div>
-          <h2>Погода: {weatherLocation}</h2>
+          <h2>Погода сейчас: {weatherLocation}</h2>
           {weatherData && (
             <div className={'cardWeather'}>
               <h3>{'Сегодня'}</h3>
