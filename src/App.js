@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import './App.css';
 import Button from './components/Button/Button';
 import { useTelegram } from './hooks/useTelegram';
 import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
 import { Route, Routes } from 'react-router-dom';
-import Weather from './components/Weather/Weather';
 
-const tg = window.Telegram.WebApp;
 const API_BASE_URL = 'https://tg-app-online.ru';
 // const API_BASE_URL = 'http://localhost:4000';
 
@@ -25,6 +23,33 @@ function App() {
   const [loadedDays, setLoadedDays] = useState(3);
 
   const [ws, setWs] = useState(null);
+
+  const fetchWeatherData = useCallback(async () => {
+    if (!weatherLocation) {
+      return;
+    }
+  
+    setIsFetchingLocation(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/weather?city=${weatherLocation}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setWeatherData(data);
+    } catch (error) {
+      console.error('Ошибка запроса weather data:', error);
+    } finally {
+      setIsFetchingLocation(false);
+    }
+  }, [weatherLocation]);
 
   useEffect(() => {
     tg.ready()
@@ -59,12 +84,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (activePage === 2) {
+    if (activePage === 2 && weatherLocation) {
       fetchWeatherData();
     } else if (activePage === 3) {
       fetchForecastData();
     }
-  }, [activePage, loadedDays, weatherLocation]);
+  }, [activePage, weatherLocation, fetchWeatherData]);
 
   const sendMessage = (message) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
@@ -79,40 +104,6 @@ function App() {
   
   const loadMoreForecast = () => {
     setLoadedDays((prevDays) => prevDays + 3);
-  };
-
-  const fetchWeatherData = async () => {
-    if (!weatherLocation) {
-      setWeatherLocation('Moscow');
-      return;
-    }
-
-    setIsFetchingLocation(true);
-    try {
-      // const response = await fetch(`${API_BASE_URL}/api/weather`, {
-        // const response = await fetch(`${API_BASE_URL}/api/weather?location=${weatherLocation}`, {
-          const response = await fetch(`${API_BASE_URL}/api/weather?city=${weatherLocation}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-  
-      if (!response.ok) {
-        const text = await response.text();
-        console.error('Server response:', text);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      setWeatherData(data);
-      setWeatherLocation(data.location.name);
-    } catch (error) {
-      console.error('Ошибка запроса weather data:', error);
-      console.error('Полная информация об ошибке:', error.message);
-    } finally {
-      setIsFetchingLocation(false);
-    }
   };
 
   const fetchForecastData = async () => {
@@ -193,21 +184,25 @@ function App() {
 
           <h2>Погода: {weatherLocation}</h2>
 
-          {weatherData && (
-            <div className={'cardWeather'}>
-              <h3>{'Сейчас'}</h3>
-              <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
-              <p>Условия: {weatherData.current.condition.text}</p>
-              <hr/>
-              <p>Температура: {weatherData.current.temp_c}°C</p>
-              <p>Ветер: {weatherData.current.wind_kph}км/ч</p>
-              <p>Облачность: {weatherData.current.cloud}</p>
-              <p>Влажность: {weatherData.current.humidity}</p>
-              <p>Видимость: {weatherData.current.vis_km}км.</p>
-              <p>Давление: {weatherData.current.pressure_mb}мм рт.ст.</p>
-              <p>Индекс ультрафиолета: {weatherData.current.uv}</p>
-            </div>
-          )}
+          {isFetchingLocation ? (
+              <p>Загрузка данных о погоде...<img className={'preloader'}></img></p>
+            ) : weatherData ? (
+              <div className={'cardWeather'}>
+                <h3>{"Сейчас:"}</h3>
+                <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
+                <p>Условия: {weatherData.current.condition.text}</p>
+                <hr/>
+                <p>Температура: {weatherData.current.temp_c}°C</p>
+                <p>Ветер: {weatherData.current.wind_kph}км/ч</p>
+                <p>Облачность: {weatherData.current.cloud}</p>
+                <p>Влажность: {weatherData.current.humidity}</p>
+                <p>Видимость: {weatherData.current.vis_km}км.</p>
+                <p>Давление: {weatherData.current.pressure_mb}мм рт.ст.</p>
+                <p>Индекс ультрафиолета: {weatherData.current.uv}</p>
+              </div>
+            ) : (
+              <p>Выберите город для просмотра погоды</p>
+           )}
         </main>
       )}
 

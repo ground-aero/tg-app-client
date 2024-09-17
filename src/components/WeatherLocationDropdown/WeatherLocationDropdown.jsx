@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const WeatherLocationDropdown = ({ weatherLocation, setWeatherLocation, fetchWeatherData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cities = ['Moscow', 'Krasnodar', 'Smolensk', 'Ruza', 'Gelendzhik', 'Los-angeles'];
 
-  const handleCitySelect = (city) => {
+  const handleCitySelect = useCallback((city) => {
     setWeatherLocation(city);
     setIsDropdownOpen(false);
-    fetchWeatherData();
-  };
+  }, [setWeatherLocation]);
+
+  useEffect(() => {
+    if (weatherLocation) {
+      fetchWeatherData();
+    }
+  }, [weatherLocation, fetchWeatherData]);
 
   return (
     <div className="dropdown">
-      <button 
+      <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="dropdown-toggle"
       >
-        { `Выбран город: ${weatherLocation} ✅` || 'Выбрать город... ✅' }
+        {weatherLocation ? `Выбран город: ${weatherLocation} ✅` : 'Выбрать город... ✅'}
       </button>
       {isDropdownOpen && (
         <ul className="dropdown-menu">
-
           {cities.map((city) => (
             <li key={city} onClick={() => handleCitySelect(city)} className="dropdown-item">
               {city}

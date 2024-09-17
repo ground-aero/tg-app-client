@@ -26,6 +26,14 @@ body {
   padding: 10px 0 20px;
 }
 
+.preloader1 {
+  width: 25px;
+  height: 25px;
+  background-image: url('/images/preloader1.gif');
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+}
+
 .input {
   height: 35px;
   width: 55%;
