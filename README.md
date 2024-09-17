@@ -4,7 +4,7 @@
 ### Name of the App if Telegram: @TgGroundBot
 
 ### Frontend deployed to 'Netlify' server:
-Open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlify.app/) to view it in your browser.
+Alternatively you may open App link: [https://tg-app-client.netlify.app/](https://tg-app-client.netlify.app/) to view it in your browser.
 
 
 #### Basic stack: React, CSS, REST API, Telegram App Library
@@ -18,7 +18,14 @@ API данные о погоде:
  /api/forecast - запрос прогноза погоды
  
  ```
+ В приложении Telegram найдите бота с именем: **@TgGroundBot**
+ - запустите бота нажатием кнопки 'Start'
+ - выйдет приветстве Вас по имени пользователя, а также появятся кнопки: "Инфо о приложении", "Открыть окно приложения"  
+ - при нажатии на кнопку "Инфо о приложении" появится информация о доступных сервисах
+ - при нажатии на кнопку "Открыть окно приложения" откроется окно приложения с возможностью выбора страниц 1-3 (1.Чат, 2.Погода, 3.Прогноз)   
+ - дополнительно можно пользоваться альтернативным Меню в закрепе (в нижней панели/меню Телеграмма)
 
+ ```
 
 ---
 Дополнительно.
@@ -37,16 +44,6 @@ ToDo:
 ~~~
 
 
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-##### Available Scripts
-
-In the project directory, you can run:
-
-##### `npm start`
-
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 ---
