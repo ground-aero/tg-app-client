@@ -180,10 +180,10 @@ function App() {
 
       {activePage === 2 && (
         <div>
-          <h2>Погода сейчас: {weatherLocation}</h2>
+          <h2>Погода: {weatherLocation}</h2>
           {weatherData && (
             <div className={'cardWeather'}>
-              <h3>{'Сегодня'}</h3>
+              <h3>{'Сейчас'}</h3>
               <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
               <p>Temperature: {weatherData.current.temp_c}°C</p>
               <p>Condition: {weatherData.current.condition.text}</p>            
