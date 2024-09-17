@@ -27,8 +27,6 @@ export default function WebSocketComponent() {
     };
   }, []);
 
-  // Остальной код...
-
   return (
     <div>
       {/* UI */}

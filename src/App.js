@@ -10,18 +10,22 @@ const API_BASE_URL = 'https://tg-app-online.ru';
 // const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
+  const {tg, user, onClose} = useTelegram();
   const [activePage, setActivePage] = useState(1);
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
-  const [weatherLocation, setweatherLocation] = useState('');
-  const [forecastData, setForecastData] = useState([]);
-  const [isFetchingForecast, setIsFetchingForecast] = useState(false);
+  const [weatherLocation, setWeatherLocation] = useState('');
   const [forecastLocation, setForecastLocation] = useState('');
+    // const [loadedCity, setLoadedCity] = useState('Moscow');
+  const [forecastData, setForecastData] = useState([]);
+  const [isFetchingLocation, setIsFetchingLocation] = useState(false);
+  const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [loadedDays, setLoadedDays] = useState(3);
-  const [ws, setWs] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const cities = ['Moscow', 'Krasnodar', 'Smolensk', 'Ruza', 'Gelendzhik'];
 
-  const {tg, user, onClose} = useTelegram();
+  const [ws, setWs] = useState(null);
 
   useEffect(() => {
     tg.ready()
@@ -61,7 +65,7 @@ function App() {
     } else if (activePage === 3) {
       fetchForecastData();
     }
-  }, [activePage, loadedDays]);
+  }, [activePage, loadedDays, weatherLocation]);
 
   const sendMessage = (message) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
@@ -73,10 +77,20 @@ function App() {
     sendMessage(inputMessage.trim())
     setInputMessage('')
   };
+  
+  const loadLocation = () => {
+    setWeatherLocation();
+  };
+
+  const loadMoreForecast = () => {
+    setLoadedDays((prevDays) => prevDays + 3);
+  };
 
   const fetchWeatherData = async () => {
+    setIsFetchingLocation(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/weather`, {
+      // const response = await fetch(`${API_BASE_URL}/api/weather`, {
+        const response = await fetch(`${API_BASE_URL}/api/weather?city=${weatherLocation}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -91,10 +105,12 @@ function App() {
   
       const data = await response.json();
       setWeatherData(data);
-      setweatherLocation(data.location.name);
+      setWeatherLocation(data.location.name);
     } catch (error) {
       console.error('Ошибка запроса weather data:', error);
       console.error('Полная информация об ошибке:', error.message);
+    } finally {
+      setIsFetchingLocation(false);
     }
   };
 
@@ -122,10 +138,6 @@ function App() {
     } finally {
       setIsFetchingForecast(false);
     }
-  };
-
-  const loadMoreForecast = () => {
-    setLoadedDays((prevDays) => prevDays + 3);
   };
 
   return (
@@ -162,25 +174,36 @@ function App() {
             />
             <button type="buttonSecondary" onClick={handleSendMessage} className={'buttonSend'}></button>
           </div>
-
           <div>
             {messages.map((message, index) => (
                 <p key={index}><span>{`@${user?.username}:  `}</span>{typeof message === 'string' ? message : JSON.stringify(message)}</p>
             ))}
           </div>
-
         </main>
       )}
 
       {activePage === 2 && (
         <main>
           <h2>Погода: {weatherLocation}</h2>
+          <button 
+            onClick={loadLocation} 
+            // disabled={isFetchingLocation}
+          >
+            {isFetchingLocation ? 'Загрузка...' : 'Выбрать локацию...'}
+          </button>
           {weatherData && (
             <div className={'cardWeather'}>
               <h3>{'Сейчас'}</h3>
               <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
-              <p>Temperature: {weatherData.current.temp_c}°C</p>
-              <p>Condition: {weatherData.current.condition.text}</p>            
+              <p>Условия: {weatherData.current.condition.text}</p>
+              <hr/>
+              <p>Температура: {weatherData.current.temp_c}°C</p>
+              <p>Ветер: {weatherData.current.wind_kph}км/ч</p>
+              <p>Облачность: {weatherData.current.cloud}</p>
+              <p>Влажность: {weatherData.current.humidity}</p>
+              <p>Видимость: {weatherData.current.vis_km}км.</p>
+              <p>Давление: {weatherData.current.pressure_mb}мм рт.ст.</p>
+              <p>Индекс ультрафиолета: {weatherData.current.uv}</p>
             </div>
           )}
         </main>
@@ -193,9 +216,10 @@ function App() {
             <div key={index} className={'cardWeather'}>
               <h3>{day.date}</h3>
               <img src={day.day.condition.icon} alt={day.day.condition.text} />
-              <p>Max temp: {day.day.maxtemp_c}°C</p>
-              <p>Min temp: {day.day.mintemp_c}°C</p>
-              <p>Condition: {day.day.condition.text}</p>
+              <p>Mакс t: {day.day.maxtemp_c}°C</p>
+              <p>Мин t: {day.day.mintemp_c}°C</p>
+              <p>Вероятность дождя: {day.day.daily_chance_of_rain}%</p>
+              <p>Условия: {day.day.condition.text}</p>
             </div>
           ))}
           <button 
