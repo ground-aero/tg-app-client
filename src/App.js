@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import './App.css';
 import Button from './components/Button/Button';
 import { useTelegram } from './hooks/useTelegram';
+import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
 import { Route, Routes } from 'react-router-dom';
 import Weather from './components/Weather/Weather';
 
@@ -22,8 +23,6 @@ function App() {
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
   const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [loadedDays, setLoadedDays] = useState(3);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const cities = ['Moscow', 'Krasnodar', 'Smolensk', 'Ruza', 'Gelendzhik'];
 
   const [ws, setWs] = useState(null);
 
@@ -78,10 +77,6 @@ function App() {
     setInputMessage('')
   };
   
-  const loadLocation = () => {
-    setWeatherLocation();
-  };
-
   const loadMoreForecast = () => {
     setLoadedDays((prevDays) => prevDays + 3);
   };
@@ -90,7 +85,7 @@ function App() {
     setIsFetchingLocation(true);
     try {
       // const response = await fetch(`${API_BASE_URL}/api/weather`, {
-        const response = await fetch(`${API_BASE_URL}/api/weather?city=${weatherLocation}`, {
+        const response = await fetch(`${API_BASE_URL}/api/weather?location=${weatherLocation}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -185,12 +180,13 @@ function App() {
       {activePage === 2 && (
         <main>
           <h2>Погода: {weatherLocation}</h2>
-          <button 
-            onClick={loadLocation} 
-            // disabled={isFetchingLocation}
-          >
-            {isFetchingLocation ? 'Загрузка...' : 'Выбрать локацию...'}
-          </button>
+
+          <WeatherLocationDropdown 
+            weatherLocation={weatherLocation}
+            setWeatherLocation={setWeatherLocation}
+            fetchWeatherData={fetchWeatherData}
+          />
+
           {weatherData && (
             <div className={'cardWeather'}>
               <h3>{'Сейчас'}</h3>
