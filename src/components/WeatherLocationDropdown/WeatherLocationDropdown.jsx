@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const WeatherLocationDropdown = ({ weatherLocation, setWeatherLocation, fetchWeatherData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const cities = ['Moscow', 'Krasnodar', 'Smolensk', 'Ruza', 'Gelendzhik'];
+  const cities = ['Moscow', 'Krasnodar', 'Smolensk', 'Ruza', 'Gelendzhik', 'Los-angeles'];
 
   const handleCitySelect = (city) => {
     setWeatherLocation(city);
@@ -16,7 +16,7 @@ const WeatherLocationDropdown = ({ weatherLocation, setWeatherLocation, fetchWea
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="dropdown-toggle"
       >
-        { 'Выбрать город... ✅' }
+        { `Выбран город: ${weatherLocation} ✅` || 'Выбрать город... ✅' }
       </button>
       {isDropdownOpen && (
         <ul className="dropdown-menu">

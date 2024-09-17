@@ -16,7 +16,7 @@ function App() {
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
-  const [weatherLocation, setWeatherLocation] = useState('Moscow');
+  const [weatherLocation, setWeatherLocation] = useState('');
   const [forecastLocation, setForecastLocation] = useState('');
     // const [loadedCity, setLoadedCity] = useState('Moscow');
   const [forecastData, setForecastData] = useState([]);
@@ -82,6 +82,11 @@ function App() {
   };
 
   const fetchWeatherData = async () => {
+    if (!weatherLocation) {
+      setWeatherLocation('Moscow');
+      return;
+    }
+
     setIsFetchingLocation(true);
     try {
       // const response = await fetch(`${API_BASE_URL}/api/weather`, {
