@@ -18,7 +18,7 @@ function App() {
   const [forecastData, setForecastData] = useState([]);
   const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [forecastLocation, setForecastLocation] = useState('');
-  const [loadedDays, setLoadedDays] = useState(10);
+  const [loadedDays, setLoadedDays] = useState(3);
   const [ws, setWs] = useState(null);
 
   const {tg, user, onClose} = useTelegram();
@@ -29,8 +29,7 @@ function App() {
 
   useEffect(() => {
     // const newWs = new WebSocket('ws://localhost:4000');
-        const newWs = new WebSocket('wss://tg-app-online.ru');
-    // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
       console.log('WebSocket connected');
     };
