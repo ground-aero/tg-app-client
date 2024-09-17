@@ -1,4 +1,3 @@
-// import ReactDOM from 'react-dom/client';
 import React, {useEffect, useState} from 'react'
 import './App.css';
 import Button from './components/Button/Button';
@@ -31,8 +30,6 @@ function App() {
   useEffect(() => {
     // const newWs = new WebSocket('ws://localhost:4000');
         const newWs = new WebSocket('wss://tg-app-online.ru');
-    // const newWs = new WebSocket('wss://tg-app-online.ru/ws');
-    // const newWs = new WebSocket('ws://tg-app-online.ru');
     // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
       console.log('WebSocket connected');
@@ -105,7 +102,6 @@ function App() {
   const fetchForecastData = async () => {
     setIsFetchingForecast(true);
     try {
-      // const response = await fetch(`/api/forecast?days=${loadedDays}`);
       const response = await fetch(`${API_BASE_URL}/api/forecast?days=${loadedDays}`, {
         method: 'GET',
         headers: {
@@ -136,7 +132,6 @@ function App() {
   return (
     <div className={'pageContent'}>
 
-      {/* <button onClick={onClose}>Закрыть</button> */}
       <div className={'btnClose'}>
         <Button onClick={onClose}>Закрыть</Button>
       </div>
@@ -216,9 +211,7 @@ function App() {
 
       <div className={'buttonsBottom'}>
         <Button onClick={() => setActivePage(1)}>Chat</Button>
-        {/* <button onClick={() => setActivePage(1)}></button> */}
         <Button onClick={() => setActivePage(2)}>Weather</Button>
-        {/* <button onClick={() => setActivePage(3)}>Forecast</button> */}
         <Button onClick={() => setActivePage(3)}>Forecast</Button>
       </div>
     </div>
@@ -226,4 +219,3 @@ function App() {
 }
 
 export default App;
-// ReactDOM.render(<App />, document.getElementById('root'));
