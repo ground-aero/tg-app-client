@@ -13,6 +13,10 @@ body {
   padding: 10px 7px;
 }
 
+.mainContent {
+  padding: 0 0 45px;
+}
+
 .btnClose {
   display: flex;
   justify-content: flex-end;
@@ -41,16 +45,15 @@ body {
 }
 
 .buttonSecondary {
-  font-size: 12px;
+  font-size: 13px;
   font-style: italic;
   margin: 1px;
-  padding: 8px 10px;
+  padding: 12px 10px;
   /* background-color: var(--tg-theme-button-color); */
   background-color: #129c43;
   color: var(--tg-theme-button-text-color);
   border: none;
   border-radius: 4px;
-  /* outline: none; */
   cursor: pointer;
 }
 
@@ -63,14 +66,12 @@ body {
   width: 35px;
   height: 35px;
   margin-left: 3px;
-  /* background-color: #a9ffc0; */
   background-image: url('/images/send.png');
   background-position: center center;
   background-size: 30px 30px;
   background-repeat: no-repeat;
   border-radius: 50%;
   border: var(--tg-theme-button-text-color);
-  /* border-radius: 4px; */
   cursor: pointer;
 }
 

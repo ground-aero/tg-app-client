@@ -147,7 +147,7 @@ function App() {
       {/* </Routes> */}
 
       {activePage === 1 && (
-        <div>
+        <main>
           <span>{`Пользователь: @${user?.username}`}</span>
           <h2>Chat</h2>
           <div className={'inputBox'}>
@@ -170,11 +170,11 @@ function App() {
             ))}
           </div>
 
-        </div>
+        </main>
       )}
 
       {activePage === 2 && (
-        <div>
+        <main>
           <h2>Погода: {weatherLocation}</h2>
           {weatherData && (
             <div className={'cardWeather'}>
@@ -184,11 +184,11 @@ function App() {
               <p>Condition: {weatherData.current.condition.text}</p>            
             </div>
           )}
-        </div>
+        </main>
       )}
 
       {activePage === 3 && (
-        <div>
+        <main className={'mainContent'}>
           <h2>Прогноз: {forecastLocation}</h2>
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
@@ -206,7 +206,7 @@ function App() {
           >
             {isFetchingForecast ? 'Загрузка...' : 'Загрузить еще...'}
           </button>
-        </div>
+        </main>
       )}
 
       <div className={'buttonsBottom'}>
