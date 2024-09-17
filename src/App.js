@@ -51,6 +51,32 @@ function App() {
     }
   }, [weatherLocation]);
 
+  const fetchForecastData = useCallback(async () => {
+    setIsFetchingForecast(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/forecast?days=${loadedDays}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Server response:', text);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setForecastData(data.forecast.forecastday);
+      setForecastLocation(data.location.name);
+    } catch (error) {
+      console.error('ошибка запроса forecast data:', error);
+    } finally {
+      setIsFetchingForecast(false);
+    }
+  }, [loadedDays]);
+
   useEffect(() => {
     tg.ready()
   },[])
@@ -89,7 +115,7 @@ function App() {
     } else if (activePage === 3) {
       fetchForecastData();
     }
-  }, [activePage, weatherLocation, fetchWeatherData]);
+  }, [activePage, weatherLocation, fetchWeatherData, fetchForecastData]);
 
   const sendMessage = (message) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
@@ -104,32 +130,6 @@ function App() {
   
   const loadMoreForecast = () => {
     setLoadedDays((prevDays) => prevDays + 3);
-  };
-
-  const fetchForecastData = async () => {
-    setIsFetchingForecast(true);
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/forecast?days=${loadedDays}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-  
-      if (!response.ok) {
-        const text = await response.text();
-        console.error('Server response:', text);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setForecastData(data.forecast.forecastday);
-      setForecastLocation(data.location.name);
-    } catch (error) {
-      console.error('ошибка запроса forecast data:', error);
-    } finally {
-      setIsFetchingForecast(false);
-    }
   };
 
   return (
