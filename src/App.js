@@ -19,7 +19,7 @@ function App() {
   const [forecastData, setForecastData] = useState([]);
   const [isFetchingForecast, setIsFetchingForecast] = useState(false);
   const [forecastLocation, setForecastLocation] = useState('');
-  const [loadedDays, setLoadedDays] = useState(5);
+  const [loadedDays, setLoadedDays] = useState(10);
   const [ws, setWs] = useState(null);
 
   const {tg, user, onClose} = useTelegram();
