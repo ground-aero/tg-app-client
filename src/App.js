@@ -16,7 +16,7 @@ function App() {
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
-  const [weatherLocation, setWeatherLocation] = useState('');
+  const [weatherLocation, setWeatherLocation] = useState('Moscow');
   const [forecastLocation, setForecastLocation] = useState('');
     // const [loadedCity, setLoadedCity] = useState('Moscow');
   const [forecastData, setForecastData] = useState([]);
@@ -85,7 +85,8 @@ function App() {
     setIsFetchingLocation(true);
     try {
       // const response = await fetch(`${API_BASE_URL}/api/weather`, {
-        const response = await fetch(`${API_BASE_URL}/api/weather?location=${weatherLocation}`, {
+        // const response = await fetch(`${API_BASE_URL}/api/weather?location=${weatherLocation}`, {
+          const response = await fetch(`${API_BASE_URL}/api/weather?city=${weatherLocation}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -179,13 +180,13 @@ function App() {
 
       {activePage === 2 && (
         <main>
-          <h2>Погода: {weatherLocation}</h2>
-
           <WeatherLocationDropdown 
             weatherLocation={weatherLocation}
             setWeatherLocation={setWeatherLocation}
             fetchWeatherData={fetchWeatherData}
           />
+
+          <h2>Погода: {weatherLocation}</h2>
 
           {weatherData && (
             <div className={'cardWeather'}>
