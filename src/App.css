@@ -64,6 +64,8 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  position: relative;
+  z-index: 1000;
 }
 
 .inputBox {
