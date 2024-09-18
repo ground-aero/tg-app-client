@@ -201,7 +201,10 @@ function App() {
                 <p>Индекс ультрафиолета: {weatherData.current.uv}</p>
               </div>
             ) : (
-              <p>Выберите город для просмотра погоды</p>
+              <>
+                <p className={'weatherText'}>Выберите город для просмотра погоды</p>
+                <img className={'weatherIcon'}></img>
+              </>
            )}
         </main>
       )}
