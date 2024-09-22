@@ -197,7 +197,7 @@ function App() {
                 <p>Облачность: {weatherData.current.cloud}</p>
                 <p>Влажность: {weatherData.current.humidity}</p>
                 <p>Видимость: {weatherData.current.vis_km}км.</p>
-                <p>Давление: {weatherData.current.pressure_mb}мм рт.ст.</p>
+                <p>Давление: {weatherData.current.pressure_mb}м.бар</p>
                 <p>Индекс ультрафиолета: {weatherData.current.uv}</p>
               </div>
             ) : (

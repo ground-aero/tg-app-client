@@ -43,6 +43,10 @@ body {
   margin-bottom: 20px;
 }
 
+.dropdown-menu, .cardWeather {
+  font-family: Arial, sans-serif;
+}
+
 .cardWeather {
   width: 230px;
   padding: 10px 5px;

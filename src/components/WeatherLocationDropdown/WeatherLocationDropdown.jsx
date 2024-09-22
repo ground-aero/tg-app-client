@@ -21,7 +21,7 @@ const WeatherLocationDropdown = ({ weatherLocation, setWeatherLocation, fetchWea
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="dropdown-toggle"
       >
-        {weatherLocation ? `Выбран город: ${weatherLocation} ✅` : 'Выбрать город... ✅'}
+        {weatherLocation ? `Выбран город: ${weatherLocation} (v)` : `Выбрать город... (v)`}
       </button>
       {isDropdownOpen && (
         <ul className="dropdown-menu">
