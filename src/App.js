@@ -68,7 +68,12 @@ function App() {
       }
 
       const data = await response.json();
-      setForecastData(data.forecast.forecastday);
+      setForecastData(prevData => {
+        const newData = data.forecast.forecastday;
+        const existingDates = new Set(prevData.map(day => day.date));
+        const uniqueNewData = newData.filter(day => !existingDates.has(day.date));
+        return [...prevData, ...uniqueNewData];
+      });
       setForecastLocation(data.location.name);
     } catch (error) {
       console.error('ошибка запроса forecast data:', error);
@@ -76,6 +81,22 @@ function App() {
       setIsFetchingForecast(false);
     }
   }, [loadedDays]);
+
+  const loadMoreForecast = () => {
+    setLoadedDays((prevDays) => prevDays + 3);
+  };
+
+  useEffect(() => {
+    if (activePage === 2 && weatherLocation) {
+      fetchWeatherData();
+    }
+  }, [activePage, weatherLocation, fetchWeatherData]);
+
+  useEffect(() => {
+    if (activePage === 3) {
+      fetchForecastData();
+    }
+  }, [activePage, fetchForecastData, loadedDays]);
 
   useEffect(() => {
     tg.ready()
@@ -109,14 +130,6 @@ function App() {
   };
   }, []);
 
-  useEffect(() => {
-    if (activePage === 2 && weatherLocation) {
-      fetchWeatherData();
-    } else if (activePage === 3) {
-      fetchForecastData();
-    }
-  }, [activePage, weatherLocation, fetchWeatherData, fetchForecastData]);
-
   const sendMessage = (message) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(message);
@@ -126,10 +139,6 @@ function App() {
   const handleSendMessage = () => {
     sendMessage(inputMessage.trim())
     setInputMessage('')
-  };
-  
-  const loadMoreForecast = () => {
-    setLoadedDays((prevDays) => prevDays + 3);
   };
 
   return (
@@ -152,7 +161,7 @@ function App() {
       {activePage === 1 && (
         <main>
           <span>{`Пользователь: @${user?.username}`}</span>
-          <h2>Chat</h2>
+          <h2>Private Chat</h2>
           <div className={'inputBox'}>
             <input
               type="text" placeholder={'Введите сообщение'} className={'input'}
