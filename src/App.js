@@ -112,14 +112,27 @@ function App() {
         event.data.text()
         .then(text => {
           const parsedMessage = JSON.parse(text);
-          setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+          setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, parsedMessage]
+            localStorage.setItem('chatMessages', JSON.stringify(updatedMessages))
+            return updatedMessages;
+          });
         });
       } else {
         const parsedMessage = JSON.parse(event.data);
-        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages, parsedMessage];
+          localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+          return updatedMessages;
+        });
       }
     };
     setWs(newWs);
+
+  const storedMessages = localStorage.getItem('chatMessages');
+  if (storedMessages ) {
+    setMessages(JSON.parse(storedMessages));
+  }
 
   return () => {
     if (newWs.readyState === WebSocket.OPEN) {
