@@ -5,8 +5,8 @@ import { useTelegram } from './hooks/useTelegram';
 import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
 import { Route, Routes } from 'react-router-dom';
 
-// const API_BASE_URL = 'https://tg-app-online.ru';
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://tg-app-online.ru';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const {tg, user, onClose} = useTelegram();
@@ -83,16 +83,12 @@ function App() {
 
   const sendMessage = (message) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
-      const messageData = {
-        type: 'NEW_MESSAGE',
-        message: {
-          text: message,
-          username: user?.username,
-          timestamp: new Date().toISOString(),
-        }
-      };
-    console.log(messageData)
-      ws.send(JSON.stringify(messageData));
+      const messageWithUser = JSON.stringify({
+        message: message,
+        username: user?.username,
+      })
+    console.log(messageWithUser)
+      ws.send(messageWithUser);
     }
   };
 
@@ -102,51 +98,34 @@ function App() {
   };
   
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:4000');
-    // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+    // const newWs = new WebSocket('ws://localhost:4000');
+    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
       console.log('WebSocket connected');
-      // Запрашиваем историю сообщений при подключении
-      newWs.send(JSON.stringify({ type: 'GET_HISTORY' }))
     };
       newWs.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
-
     // Обработчик входящих сообщений
     newWs.onmessage = (event) => {
-
-      const data = JSON.parse(event.data)
-
-      if (data.type === 'HISTORY') {
-        setMessages(data.messages.text)
-      } else if (data.type === 'NEW_MESSAGE') {
+      if (event.data instanceof Blob) {
+        event.data.text()
+        .then(text => {
+          const parsedMessage = JSON.parse(text);
+          setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, parsedMessage]
+            localStorage.setItem('chatMessages', JSON.stringify(updatedMessages))
+            return updatedMessages;
+          });
+        });
+      } else {
+        const parsedMessage = JSON.parse(event.data);
         setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, data.message.text];
+          const updatedMessages = [...prevMessages, parsedMessage];
           localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
           return updatedMessages;
         });
       }
-
-      // if (event.data instanceof Blob) {
-      //   event.data.text()
-      //   .then(text => {
-      //     const parsedMessage = JSON.parse(text);
-      //     setMessages((prevMessages) => {
-      //       const updatedMessages = [...prevMessages, parsedMessage]
-      //       localStorage.setItem('chatMessages', JSON.stringify(updatedMessages))
-      //       return updatedMessages;
-      //     });
-      //   });
-      // } else {
-      //   const parsedMessage = JSON.parse(event.data);
-      //   setMessages((prevMessages) => {
-      //     const updatedMessages = [...prevMessages, parsedMessage];
-      //     localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
-      //     return updatedMessages;
-      //   });
-      // }
-
     };
     setWs(newWs);
 
