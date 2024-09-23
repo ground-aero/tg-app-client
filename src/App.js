@@ -119,10 +119,10 @@ function App() {
       const data = JSON.parse(event.data)
 
       if (data.type === 'HISTORY') {
-        setMessages(data.messages)
+        setMessages(data.messages.text)
       } else if (data.type === 'NEW_MESSAGE') {
         setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, data.message];
+          const updatedMessages = [...prevMessages, data.message.text];
           localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
           return updatedMessages;
         });
