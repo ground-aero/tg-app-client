@@ -113,7 +113,7 @@ function App() {
     if (activePage === 2 && weatherLocation) {
       fetchWeatherData();
     }
-  }, [activePage, weatherLocation, fetchWeatherData]);
+  }, [activePage, fetchWeatherData, weatherLocation]);
 
   useEffect(() => {
     if (activePage === 3) {
