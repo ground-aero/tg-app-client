@@ -20,7 +20,7 @@ function App() {
   const [forecastData, setForecastData] = useState([]);
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
   const [isFetchingForecast, setIsFetchingForecast] = useState(false);
-  const [loadedDays, setLoadedDays] = useState(3);
+  const [loadedDays, setLoadedDays] = useState(5);
 
   const [ws, setWs] = useState(null);
 
@@ -81,6 +81,22 @@ function App() {
     tg.ready()
   },[])
 
+  const sendMessage = (message) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const messageWithUser = JSON.stringify({
+        message: message,
+        username: user?.username,
+      })
+    console.log(messageWithUser)
+      ws.send(messageWithUser);
+    }
+  };
+
+  const handleSendMessage = () => {
+    sendMessage(inputMessage.trim())
+    setInputMessage('')
+  };
+  
   useEffect(() => {
     // const newWs = new WebSocket('ws://localhost:4000');
     const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
@@ -90,14 +106,17 @@ function App() {
       newWs.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
+    // Обработчик входящих сообщений
     newWs.onmessage = (event) => {
       if (event.data instanceof Blob) {
         event.data.text()
         .then(text => {
-          setMessages((prevMessages) => [...prevMessages, text]);
+          const parsedMessage = JSON.parse(text);
+          setMessages((prevMessages) => [...prevMessages, parsedMessage]);
         });
       } else {
-        setMessages((prevMessages) => [...prevMessages, event.data]);
+        const parsedMessage = JSON.parse(event.data);
+        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
       }
     };
     setWs(newWs);
@@ -120,17 +139,6 @@ function App() {
       fetchForecastData();
     }
   }, [activePage, fetchForecastData, loadedDays]);
-
-  const sendMessage = (message) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
-    }
-  };
-
-  const handleSendMessage = () => {
-    sendMessage(inputMessage.trim())
-    setInputMessage('')
-  };
   
   const loadMoreForecast = () => {
     setLoadedDays((prevDays) => prevDays + 3);
@@ -172,7 +180,7 @@ function App() {
           </div>
           <div>
             {messages.map((message, index) => (
-                <p key={index}><span>{`@${user?.username}:  `}</span>{typeof message === 'string' ? message : JSON.stringify(message)}</p>
+                <p key={index}><span>{`@${message.username}:  `}</span>{typeof message === 'string' ? message.message : JSON.stringify(message.message)}</p>
             ))}
           </div>
         </main>
