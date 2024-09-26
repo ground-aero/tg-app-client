@@ -2,11 +2,12 @@ import React, {useEffect, useState, useCallback} from 'react'
 import './App.css';
 import Button from './components/Button/Button';
 import { useTelegram } from './hooks/useTelegram';
+import {formatDate} from './utils/formatDate';
 import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
 import { Route, Routes } from 'react-router-dom';
 
-const API_BASE_URL = 'https://tg-app-online.ru';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://tg-app-online.ru';
+const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const {tg, user, onClose} = useTelegram();
@@ -98,8 +99,8 @@ function App() {
   };
   
   useEffect(() => {
-    // const newWs = new WebSocket('ws://localhost:4000');
-    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+    const newWs = new WebSocket('ws://localhost:4000');
+    // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
       console.log('WebSocket connected');
     };
@@ -214,10 +215,13 @@ function App() {
             ) : weatherData ? (
               <div className={'cardWeather'}>
                 <h3>{"Сейчас:"}</h3>
-                <img src={weatherData.current.condition.icon} alt={weatherData.current.condition.text} />
+                <div className={'boxImgAndTemp'}>
+                  <img src={weatherData.current.condition.icon} className={'ImgWeather'} alt={weatherData.current.condition.text} />
+                  <p className={'tempText'}>{weatherData.current.temp_c}</p>
+                  <span className={'tempTextC'}>°C</span>
+                </div>
                 <p>Условия: {weatherData.current.condition.text}</p>
                 <hr/>
-                <p>Температура: {weatherData.current.temp_c}°C</p>
                 <p>Ветер: {weatherData.current.wind_kph}км/ч</p>
                 <p>Облачность: {weatherData.current.cloud}</p>
                 <p>Влажность: {weatherData.current.humidity}</p>
@@ -239,7 +243,7 @@ function App() {
           <h2>Прогноз: {forecastLocation}</h2>
           {forecastData.map((day, index) => (
             <div key={index} className={'cardWeather'}>
-              <h3>{day.date}</h3>
+              <h3>{formatDate(day.date)}</h3>
               <img src={day.day.condition.icon} alt={day.day.condition.text} />
               <p>Mакс t: {day.day.maxtemp_c}°C</p>
               <p>Мин t: {day.day.mintemp_c}°C</p>

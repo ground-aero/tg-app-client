@@ -8,6 +8,8 @@
 .idea
 
 /pattern_json.*
+pattern_weather.*
+pattern_forecast.*
 
 # testing
 /coverage

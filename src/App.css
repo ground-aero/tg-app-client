@@ -57,6 +57,28 @@ body {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 3px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
+.boxImgAndTemp {
+  display: flex;
+  width: 75%;
+  justify-items: flex-start;
+  /* justify-content: space-between; */
+}
+
+.ImgWeather {
+  width: 60px;
+  height: 60px;
+}
+
+.tempText {
+  font-size: 40px;
+  margin-top: 8px;
+}
+
+.tempTextC {
+  font-size: 15px;
+  line-height: 45px;
+}
+
 .buttonSecondary {
   font-size: 13px;
   font-style: italic;
