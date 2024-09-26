@@ -6,8 +6,8 @@ import {formatDate} from './utils/formatDate';
 import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
 import { Route, Routes } from 'react-router-dom';
 
-// const API_BASE_URL = 'https://tg-app-online.ru';
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://tg-app-online.ru';
+// const API_BASE_URL = 'http://localhost:4000';
 
 function App() {
   const {tg, user, onClose} = useTelegram();
@@ -99,8 +99,8 @@ function App() {
   };
   
   useEffect(() => {
-    const newWs = new WebSocket('ws://localhost:4000');
-    // const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
+    // const newWs = new WebSocket('ws://localhost:4000');
+    const newWs = new WebSocket(`${API_BASE_URL.replace('https', 'wss')}`);
     newWs.onopen = () => {
       console.log('WebSocket connected');
     };
