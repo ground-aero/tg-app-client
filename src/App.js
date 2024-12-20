@@ -4,7 +4,6 @@ import Button from './components/Button/Button';
 import { useTelegram } from './hooks/useTelegram';
 import {formatDate} from './utils/formatDate';
 import WeatherLocationDropdown from './components/WeatherLocationDropdown/WeatherLocationDropdown';
-import { Route, Routes } from 'react-router-dom';
 
 const API_BASE_URL = 'https://tg-app-online.ru';
 // const API_BASE_URL = 'http://localhost:4000';
@@ -36,6 +35,7 @@ function App() {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
       });
   
@@ -172,7 +172,7 @@ function App() {
         <Route path="/" exact/> */}
         {/* <Route index element={<Chats/>}/> */}
         {/* <Route path="weather" element={<Weather/>}/> */}
-        {/* <Route path="forecastr" element={<Forecast/>}/> */}
+        {/* <Route path="forecast" element={<Forecast/>}/> */}
       {/* </Routes> */}
 
       {activePage === 1 && (
