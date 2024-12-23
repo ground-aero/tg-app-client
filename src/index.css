@@ -1,3 +1,19 @@
+:root {
+    --tg-theme-button-text-color: #57575d;
+
+    --primary-color: #0084C2;
+    --primary-color-dark: #006392;
+    --secondary-color: #2c333c;
+
+    --text-color-dark: #42434B;
+    --text-color-middle: #99999E;
+    --text-color-light: #E1E1E1;
+
+    --background-primary: #F9F9F9;
+    --background-secondary: #EFEFEF;
+    --background-tertiary: #99999E;
+}
+
 body, button, input, select, textarea {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

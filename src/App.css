@@ -69,6 +69,10 @@ body {
   height: 60px;
 }
 
+.textHint {
+  color: var(--tg-theme-hint-color);
+}
+
 .tempText {
   font-size: 40px;
   margin-top: 8px;
@@ -114,7 +118,7 @@ body {
 
 .buttonsBottom { 
   position: fixed;
-  bottom: 0;
+  bottom: 25px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
