@@ -1,5 +1,8 @@
 :root {
     --tg-theme-button-text-color: #57575d;
+    --tg-theme-hint-color: #a1a1ab;
+
+    --color-white: #FFFFFF;
 
     --primary-color: #0084C2;
     --primary-color-dark: #006392;
